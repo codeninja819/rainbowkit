@@ -1,6 +1,15 @@
-import React, { Fragment, useContext } from 'react';
-import { useDisconnect, useNetwork, useSwitchNetwork } from 'wagmi';
+import { fetchBalance } from '@wagmi/core';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { Address } from 'viem';
+import {
+  useAccount,
+  useConfig,
+  useDisconnect,
+  useNetwork,
+  useSwitchNetwork,
+} from 'wagmi';
 import { isMobile } from '../../utils/isMobile';
+import { USDT_ADDRESSES } from '../../utils/usdt';
 import { AsyncImage } from '../AsyncImage/AsyncImage';
 import { Box } from '../Box/Box';
 import { CloseButton } from '../CloseButton/CloseButton';
@@ -24,6 +33,30 @@ export interface ChainModalProps {
 
 export function ChainModal({ onClose, open }: ChainModalProps) {
   const { chain: activeChain } = useNetwork();
+  const { address } = useAccount();
+  const [usdBalances, setUSDBalances] = useState<Record<number, string>>({});
+  const config = useConfig();
+  useEffect(() => {
+    (async () => {
+      config.chains?.map(async (chain) => {
+        const data = await fetchBalance({
+          address: address as Address,
+          chainId: chain.id,
+          token: USDT_ADDRESSES[chain.id] as Address,
+        });
+        console.log(chain, data);
+        setUSDBalances((balances) => {
+          if (data) {
+            balances[chain.id] = `${Number(data.formatted).toFixed(1)} ${
+              data.symbol
+            }`;
+          }
+          return balances;
+        });
+      });
+    })();
+  }, [config, address]);
+
   const { chains, pendingChainId, reset, switchNetwork } = useSwitchNetwork({
     onSettled: () => {
       reset(); // reset mutation variables (eg. pendingChainId, error)
@@ -134,6 +167,11 @@ export function ChainModal({ onClose, open }: ChainModalProps) {
                                 </Box>
                               )}
                               <div>{name ?? chain.name}</div>
+                              <div>
+                                {usdBalances[chain.id]
+                                  ? ` | ${usdBalances[chain.id]}`
+                                  : ''}
+                              </div>
                             </Box>
                             {isCurrentChain && (
                               <Box

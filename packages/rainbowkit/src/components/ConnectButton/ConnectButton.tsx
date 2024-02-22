@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Address, useBalance } from 'wagmi';
 import {
   ResponsiveValue,
   mapResponsiveValue,
@@ -7,6 +8,7 @@ import {
 import { touchableStyles } from '../../css/touchableStyles';
 import { useConnectionStatus } from '../../hooks/useConnectionStatus';
 import { isMobile } from '../../utils/isMobile';
+import { USDT_ADDRESSES } from '../../utils/usdt';
 import { AsyncImage } from '../AsyncImage/AsyncImage';
 import { Avatar } from '../Avatar/Avatar';
 import { Box } from '../Box/Box';
@@ -64,6 +66,11 @@ export function ConnectButton({
       }) => {
         const ready = mounted && connectionStatus !== 'loading';
         const unsupportedChain = chain?.unsupported ?? false;
+        const { data } = useBalance({
+          address: account?.address as Address,
+          chainId: chain?.id,
+          token: USDT_ADDRESSES[chain?.id!] as Address,
+        });
 
         return (
           <Box
@@ -166,6 +173,10 @@ export function ConnectButton({
                         </Box>
                       </Box>
                     )}
+                    <small>
+                      {data &&
+                        `${Number(data?.formatted).toFixed(1)} ${data?.symbol}`}
+                    </small>
                     <DropdownIcon />
                   </Box>
                 )}
