@@ -22,6 +22,7 @@ type ChainName =
   | 'kovan'
   | 'localhost'
   | 'mainnet'
+  | 'opBNB'
   | 'optimism'
   | 'optimismKovan'
   | 'optimismGoerli'
@@ -84,6 +85,11 @@ const hardhatIcon: IconMetadata = {
   iconUrl: async () => (await import('./chainIcons/hardhat.svg')).default,
 };
 
+const opbnbIcon: IconMetadata = {
+  iconBackground: '#ebac0e',
+  iconUrl: async () => (await import('./chainIcons/bsc.svg')).default,
+};
+
 const optimismIcon: IconMetadata = {
   iconBackground: '#ff5a57',
   iconUrl: async () => (await import('./chainIcons/optimism.svg')).default,
@@ -128,6 +134,7 @@ const chainMetadataByName: Record<ChainName, ChainMetadata | null> = {
   kovan: { chainId: 42, ...ethereumIcon },
   localhost: { chainId: 1_337, ...ethereumIcon },
   mainnet: { chainId: 1, name: 'Ethereum', ...ethereumIcon },
+  opBNB: { chainId: 204, name: 'opBNB', ...opbnbIcon },
   optimism: { chainId: 10, name: 'Optimism', ...optimismIcon },
   optimismGoerli: { chainId: 420, ...optimismIcon },
   optimismKovan: { chainId: 69, ...optimismIcon },
