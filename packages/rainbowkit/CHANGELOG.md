@@ -1,5 +1,11 @@
 # @rainbow-me/rainbowkit
 
+## 2.0.1
+
+### Patch Changes
+
+- f69c0e1: Added support for `ronin` chain
+
 ## 2.0.0
 
 ### Major Changes

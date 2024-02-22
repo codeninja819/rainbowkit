@@ -1,5 +1,15 @@
 # example
 
+## 0.0.91
+
+### Patch Changes
+
+- f69c0e1: Added support for `ronin` chain
+- Updated dependencies [f69c0e1]
+  - @rainbow-me/rainbowkit@2.0.1
+  - @rainbow-me/rainbow-button@0.2.1
+  - @rainbow-me/rainbowkit-siwe-next-auth@0.4.0
+
 ## 0.0.90
 
 ### Patch Changes
