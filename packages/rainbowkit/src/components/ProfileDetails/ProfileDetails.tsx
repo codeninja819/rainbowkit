@@ -91,7 +91,7 @@ export function ProfileDetails({
             >
               <CloseButton onClose={onClose} />
             </Box>{' '}
-            <Box marginTop={mobile ? '24' : '0'}>
+            <Box marginTop={mobile ? '24' : '0'} hidden={true}>
               <Avatar
                 address={address}
                 imageUrl={ensAvatar}
